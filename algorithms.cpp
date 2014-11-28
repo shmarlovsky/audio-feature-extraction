@@ -1,8 +1,42 @@
 #include "algorithms.h"
 #include <QDebug>
+#include "mainwindow.h"
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+using namespace essentia;
+using namespace essentia::standard;
 
 
-void loadAudio (string fileName)
+AudioProcess::AudioProcess()
+{
+
+    //audioBuffer.push_back(0);
+
+}
+
+vector<Real> AudioProcess::getAudioBuffer() const
+{
+    return audioBuffer;
+}
+
+void AudioProcess::setAudioBuffer(const vector<Real> &value)
+{
+    audioBuffer = value;
+}
+vector<Real> AudioProcess::getFrame() const
+{
+    return frame;
+}
+
+void AudioProcess::setFrame(const vector<Real> &value)
+{
+    frame = value;
+}
+
+
+void AudioProcess::loadAudio (string fileName)
 {
     essentia::init();
 
@@ -14,26 +48,30 @@ void loadAudio (string fileName)
                                        "sampleRate", sampleRate);
    // vector<Real> audioBuffer;
 
-    audio->output("audio").set(::audioBuffer);
+    audioBuffer.clear();
+    audio->output("audio").set(audioBuffer);
     audio->compute();
-    qDebug() << "AudioBuffer size: " << ::audioBuffer.size();
+    qDebug() << "AudioBuffer size: " << audioBuffer.size();
     delete audio;
     essentia::shutdown();
-   // return audioBuffer;
+    //return audioBuffer;
 }
 
-vector<Real> getMFCC ()
+void AudioProcess::makeFrame (float startPos, float windowSize)
 {
+    frame.clear();
 
-}
+    float a = startPos*44100.0;
 
-vector<Real> makeWindow (vector<Real> audio, float startPos)
-{
-    vector<Real> window;
-    int windowSize = 300;
     for (int i=0; i<windowSize; i++)
     {
-        window[i]=audio[startPos*44100];
+        frame.push_back(audioBuffer[a+i]);
     }
-    return window;
+
+}
+
+
+vector<Real> AudioProcess::getMFCC ()
+{
+
 }

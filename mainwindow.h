@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "qcustomplot.h"
 #include "algorithms.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -15,7 +16,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void drawGraphics(QCustomPlot *customPlot, vector<float>, vector<Real>);
+    void drawGraphics(QCustomPlot *customPlot, std::vector<float>, std::vector<essentia::Real>);
 
 private slots:
     void on_actionOpen_triggered();
@@ -27,6 +28,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    AudioProcess obj1;
 };
 
 #endif // MAINWINDOW_H

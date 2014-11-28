@@ -1,6 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-//#include "algorithms.h"
+#include "algorithms.h"
+
+using namespace std;
+using namespace essentia;
+using namespace essentia::standard;
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -20,21 +25,24 @@ void MainWindow::on_actionOpen_triggered()
                                                      tr("Files (*.*)"));
     if(qFileName!=NULL)
     {
-    //vector <Real> audio =
-            loadAudio(qFileName.toStdString());
 
+    obj1.loadAudio(qFileName.toStdString());
 
-    vector <float> xStd(audioBuffer.size());
+    int bufferSize = obj1.getAudioBuffer().size();
+    vector <float> xStd(bufferSize);
 
-    for (int i=0; i<audioBuffer.size(); i++)
+    for (int i=0; i<bufferSize; i++)
     {
         xStd[i] = i/44100.0;
 
     }
-    drawGraphics(ui->signalWidjet,xStd, audioBuffer);
+
+    drawGraphics(ui->signalWidget,xStd, obj1.getAudioBuffer());
+
     }
 }
 
+// displaying vector on specified Plot
 void MainWindow::drawGraphics(QCustomPlot *customPlot, vector<float> xStd, vector <Real> audio)
 {
 
@@ -53,26 +61,23 @@ void MainWindow::on_takeWindowButton_clicked()
 {
 
         float  windowStartPosition = ui->takeWindowLineEdit->text().toFloat();
-        qDebug() <<"WindowStartPos:" << windowStartPosition;
-        //vector<Real> window = makeWindow(audio, windowStartPosition);
-        //drawGraphics(ui->mfccWidget, window);
+        float inputSize = ui->windowSizeLineEdit->text().toFloat();
+        qDebug() <<"WindowStartPos: " << windowStartPosition;
+         qDebug() <<"InputSize: " << inputSize;
+        obj1.makeFrame(windowStartPosition,inputSize);
 
-        vector<Real> window;
-        int windowSize = 300;
+        int windowSize = obj1.getAudioBuffer().size();
+        vector <float> xStd2(windowSize);
+
         for (int i=0; i<windowSize; i++)
         {
-            window[i]=audioBuffer[windowStartPosition*44100];
-        }
-        vector <float> xStd(audioBuffer.size());
-
-        for (int i=0; i<window.size(); i++)
-        {
-            xStd[i] = i/44100.0;
+            xStd2[i] = i/44100.0;
 
         }
-       drawGraphics(ui->mfccWidget,xStd, window);
+
+        drawGraphics(ui->mfccWidget,xStd2 ,obj1.getFrame());
+
     }
-
 
 
 void MainWindow::on_takeWindowLineEdit_returnPressed()
