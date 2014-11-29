@@ -26,6 +26,10 @@ private slots:
     void on_takeWindowLineEdit_returnPressed();
 
 
+    void on_calculateSpectrumButton_clicked();
+
+    void on_calculateMFCCButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     AudioProcess obj1;

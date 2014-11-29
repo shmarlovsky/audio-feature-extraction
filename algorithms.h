@@ -2,15 +2,10 @@
 #define ALGORITHMS_H
 
 #include <vector>
+
 #include <essentia/algorithmfactory.h>
 #include <essentia/essentiamath.h>
 #include <essentia/pool.h>
-
-
-//убрать из заголовочника
-//using namespace std;
-//using namespace essentia;
-//using namespace essentia::standard;
 
 
 class AudioProcess
@@ -18,7 +13,7 @@ class AudioProcess
 private:
     // loaded file
     std::vector <essentia::Real> audioBuffer;
-    // specidied window
+    // specified frame
     std::vector<essentia::Real> frame;
     std::vector<essentia::Real> windowedFrame;
     std::vector<essentia::Real> spectrum;
@@ -26,19 +21,26 @@ private:
 
 public:
     std::vector<essentia::Real> getAudioBuffer() const;
-    void setAudioBuffer(const std::vector<essentia::Real> &value);
+    //void setAudioBuffer(const std::vector<essentia::Real> &value);
 
     std::vector<essentia::Real> getFrame() const;
-    void setFrame(const std::vector<essentia::Real> &value);
+    //void setFrame(const std::vector<essentia::Real> &value);
 
+    std::vector<essentia::Real> getSpectrum() const;
+    std::vector<essentia::Real> getMfcc() const;
 
     /////
     void loadAudio(std::string fileName);
-    std::vector<essentia::Real> getMFCC ();
+    void calculateMFCC();
+
+    void calculateSpectrum ();
 
     void makeFrame(float startPos, float windowSize);
     AudioProcess();
 
+    //void setSpectrum(const std::vector<essentia::Real> &value);
+
+    //void setMfcc(const std::vector<essentia::Real> &value);
 };
 
 #endif // ALGORITHMS_H
