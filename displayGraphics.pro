@@ -32,3 +32,10 @@ INCLUDEPATH += $$PWD/../../../../usr/local/include
 DEPENDPATH += $$PWD/../../../../usr/local/include
 
 unix:!macx: PRE_TARGETDEPS += $$PWD/../../../../usr/local/lib/libessentia.a
+
+unix:!macx: LIBS += -L$$PWD/../libs/k52_dsp/ -lk52_dsp
+
+INCLUDEPATH += $$PWD/../libs/k52_dsp/include
+DEPENDPATH += $$PWD/../libs/k52_dsp/include
+
+unix:!macx: PRE_TARGETDEPS += $$PWD/../libs/k52_dsp/libk52_dsp.a

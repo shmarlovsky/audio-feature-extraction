@@ -20,15 +20,16 @@ public:
 
 private slots:
     void on_actionOpen_triggered();
-
     void on_takeWindowButton_clicked();
-
     void on_takeWindowLineEdit_returnPressed();
-
-
     void on_calculateSpectrumButton_clicked();
-
     void on_calculateMFCCButton_clicked();
+    void on_calculateGFCCButton_clicked();
+    void on_calculateAllButton_clicked();
+    void on_calculateWaveletButton_clicked();
+    void on_exportTofileButton_clicked();
+
+    void on_openButton_clicked();
 
 private:
     Ui::MainWindow *ui;
